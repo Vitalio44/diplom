@@ -17,12 +17,4 @@ def category_menu(req):
                 'parent': True if len(ch.parents.all()) > 0 else False,
                 'children': create_child(ch.children.all())})
         return child_list
-
-    format_ctr = list()
-    for c in Category.objects.all():
-        format_ctr.append(
-            {'name': c.name, 'url': c.get_absolute_url(),
-             'child': True if len(c.children.all()) > 0 else False,
-             'parent': True if len(c.parents.all()) > 0 else False,
-             'children': create_child(c.children.all())})
-    return {'categories': format_ctr, 'request': req}
+    return {'categories': create_child(Category.objects.all()), 'request': req}
