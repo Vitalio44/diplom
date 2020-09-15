@@ -22,6 +22,10 @@ python manage.py migrate
 Загрузить тестовые данные:
 
 ```bash
+python manage.py shell
+>>> from django.contrib.contenttypes.models import ContentType
+>>> ContentType.objects.all().delete()
+
 python manage.py loaddata fixtures.json
 ```
 
