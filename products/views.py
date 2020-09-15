@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.paginator import Paginator
 
 from products.models import Product, Category
 from reviews.models import Review
@@ -26,9 +27,11 @@ def product_review(request, pk):
 
 def category_page(request, pk):
     cat = get_object_or_404(Category, pk=pk)
+    p = Paginator(Product.objects.filter(category=cat), 3)
+    page = request.GET.get('page')
     return render(request, 'pages/category.html',
                   {'category': cat,
-                   'category_products': Product.objects.filter(category=cat)})
+                   'category_products': p.get_page(page)})
 
 
 def cart_page(request):
@@ -41,17 +44,14 @@ def cart_page(request):
                 cart.append(p)
         return render(request, 'pages/cart.html', {'cart': cart})
     if request.method == 'POST':
-        print(request.session.get('cart'))
         cart = {}
         if request.session.get('cart') is not None:
             cart = request.session['cart']
         if request.POST.get('product_id') is not None:
             p = Product.objects.get(id=request.POST.get('product_id'))
-            print(p)
             if cart.get(str(p.id)) is None:
                 cart[str(p.id)] = 1
             else:
                 cart[str(p.id)] += 1
-        print(cart)
         request.session['cart'] = cart
         return redirect(request.META.get('HTTP_REFERER'))

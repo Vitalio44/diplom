@@ -6,13 +6,13 @@ from products.models import Product
 
 
 class Review(models.Model):
-    user = models.ForeignKey(User, verbose_name='Пользователь',
-                             on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        User, verbose_name='Пользователь', on_delete=models.CASCADE)
     text = models.TextField(verbose_name='Текст')
-    published_at = models.DateTimeField(verbose_name='Дата публикации',
-                                        auto_now_add=True)
-    product = models.ForeignKey(Product, verbose_name='Товар',
-                                on_delete=models.CASCADE)
+    published_at = models.DateTimeField(
+        verbose_name='Дата публикации', auto_now_add=True)
+    product = models.ForeignKey(
+        Product, verbose_name='Товар', on_delete=models.CASCADE)
     rating = models.PositiveIntegerField(
         default=1, validators=[MinValueValidator(1), MaxValueValidator(5)],
         verbose_name='Рейтинг')

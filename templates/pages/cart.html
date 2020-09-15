@@ -18,11 +18,15 @@
           </li>
           {% endfor %}
         </ul>
-
-        <form class="card p-2">
+        {% if cart %}
+        <form class="card p-2" action="{% url 'create_order' %}" method="post">
+          {% csrf_token %}
+          {% for product in cart %}
+          <input type="hidden" name="product_{{ product.id }}" value="{{ product.count }}">
+          {% endfor %}
           <button type="submit" class="btn btn-secondary">Заказать</button>
         </form>
-
+        {% endif %}
       </div>
     </div>
   </div>
